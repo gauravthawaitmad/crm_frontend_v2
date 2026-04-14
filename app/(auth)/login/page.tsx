@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -25,7 +25,7 @@ const OAUTH_ERRORS: Record<string, string> = {
   google_failed: 'Google sign-in failed. Please try again or use your password.',
 };
 
-export default function LoginPage() {
+function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [oauthError, setOauthError] = useState<string | null>(null);
   const { mutate: doLogin, isPending, error } = useLogin();
@@ -213,5 +213,13 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
